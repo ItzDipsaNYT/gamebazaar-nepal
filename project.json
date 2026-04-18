@@ -1,0 +1,24 @@
+{
+  "overview": "GameBazaar Nepal is a full-stack gaming-themed ecommerce store for digital products. Features a dark neon UI with product catalog (18 items), shopping cart, user auth, order management, and a secure staff admin panel with analytics.",
+  "features": [
+    "Dark neon gaming UI with animated background and floating logo",
+    "18 digital products (streaming, gaming, software) priced in NPR",
+    "User signup/login with purchase history and order tracking",
+    "Shopping cart, checkout, and unique Order ID generation",
+    "Secure staff login with backend-verified staff code",
+    "Admin panel: order management, payment confirmation, status updates",
+    "Product management: add/edit/delete, stock toggle",
+    "Sales analytics with revenue charts and order trends",
+    "Responsive mobile + desktop design with glassmorphism cards"
+  ],
+  "category": "ecommerce",
+  "tags": [
+    "gaming",
+    "ecommerce",
+    "nepal",
+    "digital-products",
+    "admin-panel",
+    "dark-theme"
+  ],
+  "last_updated": "2026-04-18T06:30:51.107Z"
+}

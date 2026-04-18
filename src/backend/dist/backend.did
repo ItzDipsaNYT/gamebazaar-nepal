@@ -1,0 +1,201 @@
+type UserRole = 
+ variant {
+   staff;
+   user;
+ };
+type UserInfo = 
+ record {
+   createdAt: Timestamp;
+   email: text;
+   role: UserRole;
+ };
+type UpdateProductInput = 
+ record {
+   category: opt Category;
+   description: opt text;
+   featured: opt bool;
+   imageUrl: opt text;
+   inStock: opt bool;
+   name: opt text;
+   priceNPR: opt nat;
+ };
+type TopProduct = 
+ record {
+   orderCount: nat;
+   productId: nat;
+   productName: text;
+   revenueNPR: nat;
+ };
+type Timestamp = int;
+type StatusDistribution = 
+ record {
+   confirmed: nat;
+   delivered: nat;
+   processing: nat;
+   underReview: nat;
+ };
+type SessionToken = text;
+type ProductInfo = 
+ record {
+   category: Category;
+   description: text;
+   featured: bool;
+   id: nat;
+   imageUrl: text;
+   inStock: bool;
+   name: text;
+   priceNPR: nat;
+ };
+type PaymentStatus = 
+ variant {
+   Confirmed;
+   Delivered;
+   Processing;
+   UnderReview;
+ };
+type PaymentMethod = 
+ variant {
+   BankTransfer;
+   ESewa;
+ };
+type OrderItem = 
+ record {
+   priceNPR: nat;
+   productId: nat;
+   productName: text;
+ };
+type OrderInfo = 
+ record {
+   items: vec OrderItem;
+   orderId: OrderId;
+   paymentMethod: PaymentMethod;
+   paymentStatus: PaymentStatus;
+   timestamp: Timestamp;
+   totalNPR: nat;
+   userEmail: text;
+ };
+type OrderId = text;
+type OrderFilter = 
+ record {
+   email: opt text;
+   productName: opt text;
+   status: opt PaymentStatus;
+ };
+type LoginResult = 
+ variant {
+   err: text;
+   ok: record {
+         token: SessionToken;
+         user: UserInfo;
+       };
+ };
+type DailyRevenue = 
+ record {
+   date: text;
+   orderCount: nat;
+   revenueNPR: nat;
+ };
+type CreateProductInput = 
+ record {
+   category: Category;
+   description: text;
+   featured: bool;
+   imageUrl: text;
+   inStock: bool;
+   name: text;
+   priceNPR: nat;
+ };
+type CreateOrderInput = 
+ record {
+   items: vec OrderItem;
+   paymentMethod: PaymentMethod;
+   totalNPR: nat;
+   userEmail: text;
+ };
+type Category = 
+ variant {
+   Gaming;
+   Software;
+   Streaming;
+ };
+type AnalyticsSummary = 
+ record {
+   confirmedOrders: nat;
+   deliveredOrders: nat;
+   pendingOrders: nat;
+   totalOrders: nat;
+   totalRevenueNPR: nat;
+ };
+service : {
+  createOrder: (token: SessionToken, input: CreateOrderInput) ->
+   (variant {
+      err: text;
+      ok: OrderInfo;
+    });
+  createProduct: (token: SessionToken, input: CreateProductInput) ->
+   (variant {
+      err: text;
+      ok: ProductInfo;
+    });
+  deleteProduct: (token: SessionToken, id: nat) -> (variant {
+                                                      err: text;
+                                                      ok;
+                                                    });
+  getAllOrders: (token: SessionToken) ->
+   (variant {
+      err: text;
+      ok: vec OrderInfo;
+    }) query;
+  getAnalyticsSummary: (token: SessionToken) ->
+   (variant {
+      err: text;
+      ok: AnalyticsSummary;
+    }) query;
+  getDailyRevenue: (token: SessionToken) ->
+   (variant {
+      err: text;
+      ok: vec DailyRevenue;
+    }) query;
+  getMe: (token: SessionToken) -> (opt UserInfo) query;
+  getMyOrders: (token: SessionToken) ->
+   (variant {
+      err: text;
+      ok: vec OrderInfo;
+    }) query;
+  getProduct: (id: nat) -> (opt ProductInfo) query;
+  getProducts: () -> (vec ProductInfo) query;
+  getStatusDistribution: (token: SessionToken) ->
+   (variant {
+      err: text;
+      ok: StatusDistribution;
+    }) query;
+  getTopProducts: (token: SessionToken, limit: nat) ->
+   (variant {
+      err: text;
+      ok: vec TopProduct;
+    }) query;
+  login: (email: text, password: text) -> (LoginResult);
+  logout: (token: SessionToken) -> ();
+  searchOrders: (token: SessionToken, filter: OrderFilter) ->
+   (variant {
+      err: text;
+      ok: vec OrderInfo;
+    }) query;
+  signUp: (email: text, password: text) -> (LoginResult);
+  staffLogin: (email: text, staffCode: text) -> (LoginResult);
+  toggleStock: (token: SessionToken, id: nat) ->
+   (variant {
+      err: text;
+      ok: ProductInfo;
+    });
+  updateOrderStatus: (token: SessionToken, orderId: OrderId, newStatus:
+   PaymentStatus) -> (variant {
+                        err: text;
+                        ok: OrderInfo;
+                      });
+  updateProduct: (token: SessionToken, id: nat, input: UpdateProductInput) ->
+   (variant {
+      err: text;
+      ok: ProductInfo;
+    });
+}
